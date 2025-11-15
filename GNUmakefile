@@ -4,13 +4,14 @@
 # POC:
 # 	zenroom -l common.lua POC.lua
 
-TARGET := our-next-paper
+TARGET := zenroom-whitepaper
 
 arxiv: compose-arxiv
-	pdflatex $(TARGET)
-	bibtex   $(TARGET)
-	pdflatex $(TARGET)
-	pdflatex $(TARGET)
+	lualatex $(TARGET)
+
+# bibtex   $(TARGET)
+# pdflatex $(TARGET)
+# pdflatex $(TARGET)
 
 arxiv-zip: compose-arxiv
 	@rm -rf $(TARGET)-arxiv $(TARGET)-arxiv.zip && mkdir -p $(TARGET)-arxiv
