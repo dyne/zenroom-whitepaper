@@ -1,0 +1,212 @@
+\section{Introduction}
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+
+\subsection{State of the art}
+Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius mo....
+
+\paragraph{Linkability}
+
+The EUDI-ARF standard dictates that credentials \textit{issued} to a
+holder, can be \textit{presented} (in the form of a verifiable
+presentation) to a relying party in order to have one or more
+attributes verified. Every verifiable presentation includes one or
+more HMAC(s), formatted in SD-JWT: the HMACs are identical each time a
+verifiable presentation is produced from a certain credential. This
+makes possible for colluding relying parties, or to malicious actors,
+to trace a holder's identity by collecting, exchanging and confronting
+verifiable presentations (linkability). This threat appears to be well
+mitigated by BBS+ through its Zero Knowledge Proof implementation.
+
+\section{Overview}
+
+\subsection{Feature Comparison}
+
+\begin{table}[]
+\centering
+\renewcommand{\arraystretch}{2}
+\begin{tabular}{ccccc}
+\hline
+       & \textbf{UP} & \textbf{UR} & \textbf{TR} & \textbf{URG} \\ \hline
+SD-BLS & no          & yes         & yes         & yes \\ \hline
+SD-JWT & no          & wip         & no          & no  \\ \hline
+BBS+   & yes         & wip         & no          & yes \\ \hline
+\end{tabular}
+\vspace*{5mm}
+\caption{feature comparison}
+\label{tab:features}
+\end{table}
+
+We briefly round up on feature differences between the named selective
+disclosure cryptographic schemes, as shown in table
+\ref{tab:features}, mainly distinguishing between four fundamental
+features:
+\begin{itemize}
+\item UP: Unlinkable Presentation
+\item UR: Unlinkable Revocation
+\item TR: Threshold Revocation
+\item URG: Unregroupability
+\end{itemize}
+
+Where \emph{wip} is mentioned, it means work in progress on adoption of
+bitstring status lists for unlinkable revocations.
+
+The ``unregroupability'' feature refers to the fact that different
+presentations of different claims cannot be linked to each other
+(regrouped) as presented by the same holder, even when they are signed
+by the same issuer.
+
+\subsection{Key contributions}
+The cryptographic scheme described in this paper, named
+\textit{SD-BLS} for brevity, implements all the properties of the
+SD-JWT scheme and proposes a novel cryptographic approach to similar
+data structures. Furthermore SD-BLS proposes novel anonymous
+cryptographic revocation flow for verifiable credentials, that aims to
+solve governance issues posed by status and revocation lists.
+
+\paragraph{Selective disclosure}
+Similarly to the SD-JWT and mDOC formats, SD-BLS produces an array of
+claims: the elements of the array are individually signed by the
+issuer. In SD-BLS the signature(s) replace the HMAC and still enable
+the holder to selectively disclose only certain signed credentials,
+and produce a \textit{proof of possession} that minimizes private
+information given to verifiers.
+
+\paragraph{Anonymous cryptographic revocation}
+SD-BLS proposes a novel approach to credential revocation: the data
+published by the revocation issuer will produce cryptographic material
+that contains no information about the credential holders. The
+cryptographic revocation material allows anyone to verify if an SD-BLS
+proof produced by a credential holder has been revoked. The
+unlinkability, and thus anonymity of the cryptographic revocation,
+allows the revocation issuer to share revocations in public and allows
+anyone to verify if credentials have been revoked.
+
+\paragraph{Multi-stakeholder governance of revocations}
+SD-BLS allows to introduce a new trusted party to the issuance phase:
+the revocation dealer. The dealer doesn't need to know the content of
+the credential or the identity of an holder: its role is that of
+producing the revocation signature and distributing its secret key to
+a configurable range of revocation issuers. Later on a configurable
+quorum of issuers may reconstruct the revocation secret key to revoke
+a credential. This way the decision on a revocation is not delegated
+to a single peer, but to a multi-stakeholder governance that protects
+the holder from issuer corruption.
+
+\paragraph{Fast revocation checks}
+SD-BLS shows good benchmark results on revocation checks: the main
+operation a verifier needs to do is an additional $\mathbb{G}_2$
+multiplication. The cost of this operation grows linearly with the
+number of published revocations.
+
+\subsection{Applications}
+In this section we present some applications and use cases for digital
+identity and credentials, that could benefit from using the SD-BLS
+scheme.
+
+\paragraph{Digital identity}
+The focus of the EUDI-ARF specifications is identity documents: it
+defines mechanisms and data structures to issue a Personal
+Identification (PID) as, for instance, with digital driving
+licenses. Similarly, the US government is experimenting with W3C-VC
+and mDOC for cross-states interoperable driving licenses. The SD-BLS
+data format is similar to SD-JWT and mDOC, offering selective
+disclosure and anonymous revocation.
+
+\paragraph{Academic credentials}
+Diploma and academic credentials are among the core offerings of EBSI
+as well as a primary research target of the W3C VC working group.
+
+\paragraph{KYC/AML}
+We are unaware of standardization efforts for interoperable
+credentials in the fields of "Know Your Customer" (KYC) and Anti
+Money-Laundering (AML) certifications. We are aware of solution
+providers experimenting with W3C-VC for AML applications and believe
+SD-BLS can greatly improve the governance of credential revocation,
+which is a critical component for this use case.
+
+\paragraph{Generic \textit{light} credentials}
+As the digital identity and verifiable credential technologies are
+maturing, they are being considered for usage in less privacy
+concerning applications, such subscriptions and membership and
+fidelity cards.
+
+\paragraph{Verifiable credentials on Blockchain}
+SD-BLS can be used with blockchain-based smart-contracts to activate
+certain functions:
+\begin{itemize}
+    \item A proof of possession can be published and be peer-verified
+      on-chain in its private form without disclosing the credential
+      contents.
+    \item A smart-contract may verify if one or more holder's
+      credentials match the requirement needed to process a
+      transaction.
+    \item Issuers can publish their cryptographic revocation lists on
+      chain, allowing smart-contracts to verify the status of a
+      credential.
+    \item The issuer's public keys can also be published on-chain,
+      although this does not represent a novelty.
+\end{itemize}
+
+\section{Implementation}
+
+In this section we will provide a detailed description of the
+algorithm we propose for selective disclosure and unlinkable
+revocation using BLS signatures.
+
+\subsection{Notations and assumptions}
+
+We will adopt the following notations:
+\begin{itemize}
+
+\item $\mathbb{F}_p$ is the prime finite field with $p$ elements
+  (i.e. of prime order $p$);
+
+\item $E$ denotes the (additive) group of points of the curve
+  BLS12-381 \cite{bls381-12} which can be described with the
+  Weierstrass form $y^2=x^3 + 16$;
+
+\item $E_T$ represents instead the group of points of the twisted
+  curve of BLS12-381, with embedding degree $k=12$. The order of
+  this group is the same of that of $E$;
+
+\end{itemize}
+
+We also require the notion of a cryptographic pairing. \cite{weilpair}
+
+For the purpose of our protocol we will consider the \emph{Miller
+pairing} $e: E_T \times E\to \mathbb{G}_T$, where $\mathbb{G}_T\subset
+\mathbb{F}_{p^{12}}$ is the subgroup containing the $n$-th roots of
+unity, and $n$ is the order of the groups $E$ and $E_T$.\\ For
+completeness we also recall the main properties of the map:
+
+\begin{itemize}
+
+\item [i.] \emph{Bilinearity}, i.e. given $P_1,Q_1\in E_T$
+  and $P_2,Q_2\in E$, we have
+  \begin{align*}
+    e(P_2,P_1+Q_1) = e(P_2,P_1)\cdot e(P_2,Q_1)   \\
+    e(P_2+Q_2,P_1) = e(P_2,P_1)\cdot e(Q_2,P_1)
+  \end{align*}
+
+\item[ii.] \emph{Non-degeneracy}, meaning that for all
+  $g_1\in E_T, g_2\in E$, $e(g_2,g_1)\ne
+  1_{\mathbb{G}_T}$, the identity element of the group
+  $\mathbb{G}_T$;
+
+\item[iii.] \emph{ Efficiency}, so that the map $e$ is easy to
+  compute;
+
+\item[iv. ] $E_T \ne E$, and moreover, that
+  there exist no efficient homomorphism between $E_T$ and
+  $E$.
+
+\end{itemize}
+
+
+\section{Acknowledgements}
+At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident, similique sunt in culpa qui officia deserunt mollitia animi, id est laborum et dolorum fuga. Et harum quidem rerum facilis est et expedita distinctio. Nam libero tempore, cum soluta nobis est eligendi optio cumque nihil impedit quo minus id quod maxime placeat facere possimus, omnis voluptas assumenda est, omnis dolor repellendus.
+
+\bibliographystyle{IEEEtran}
+\bibliography{references}
+
+\end{document}

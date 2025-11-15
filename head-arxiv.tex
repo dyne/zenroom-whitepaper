@@ -1,0 +1,97 @@
+%  * Copyright (C) 2020-2025 Dyne.org foundation
+
+\documentclass{article}
+\pdfoutput=1
+
+% Roman numbers for sections
+% \renewcommand{\thesection}{\Roman{section}}
+% \renewcommand{\thesubsection}{\thesection.\Roman{subsection}}
+
+\usepackage{arxiv}
+\usepackage[utf8]{inputenc} % allow utf-8 input
+\usepackage[T1]{fontenc}    % use 8-bit T1 fonts
+ \usepackage{libertine,libertinust1math} % added 2019/11/28
+
+
+ %%
+ %\usepackage{newpxtext}
+ %\usepackage[euler-digits]{eulervm}
+
+\usepackage{hyperref}       % hyperlinks
+\usepackage{url}            % simple URL typesetting
+\usepackage{booktabs}       % professional-quality tables
+\usepackage[normalem]{ulem}
+\useunder{\uline}{\ul}{}
+
+\usepackage{amsmath}
+% \usepackage{amsthm}
+\usepackage{amsfonts}       % blackboard math symbols
+\usepackage{enumitem}
+\setlist[itemize]{align=parleft,left=0pt..1em}
+\setlist[enumerate]{align=parleft,left=0pt..1.5em,label=\large\protect\textcircled{\small\arabic*}}
+\usepackage[font=scriptsize]{caption}
+\usepackage{nicefrac}       % compact symbols for 1/2, etc.
+\usepackage[final, babel]{microtype}      % microtypography
+\usepackage{graphicx,epstopdf}
+% \usepackage{natbib}
+\usepackage{doi}
+\usepackage{inconsolata}
+\usepackage{xcolor}
+\usepackage{listings}
+
+\usepackage{hyperref} % For hyperlinks
+\hypersetup{
+  pdftex,
+  final,
+  colorlinks=true,
+  linkcolor=blue,
+  filecolor=magenta,
+  urlcolor=cyan,
+  breaklinks = true,
+  pdfstartview = FitV,
+  linktocpage = false,
+}
+
+
+%% \usepackage{draftwatermark}
+%% \SetWatermarkText{Draft}
+
+\title{SD-BLS}
+
+\author{
+  Denis Roio \\
+  Dyne.org \\
+    \And
+  Puria Nafisi Azizi \\
+  Dyne.org \\
+    \And
+  Andrea D'Intino \\
+  Forkbomb B.V.
+}
+
+\renewcommand{\headeright}{Info @ Forkbomb.eu}
+\renewcommand{\undertitle}{Our next paper}
+\renewcommand{\shorttitle}{\textit{DYNE}}
+
+\hypersetup{
+  pdftitle={DYNE: Our next paper},
+  pdfsubject={cs.CR},
+  pdfauthor={Denis Roio, Puria Nafisi Azizi, Andrea D'Intino},
+  pdfkeywords={Privacy, Digital credentials}
+}
+
+\begin{document}
+
+\twocolumn[
+  \begin{@twocolumnfalse}
+
+\maketitle
+
+\begin{abstract}
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+\end{abstract}
+
+\vspace{2cm}
+
+ \end{@twocolumnfalse}
+]
