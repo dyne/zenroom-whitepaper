@@ -15,8 +15,8 @@ jobs:
           fetch-depth: 0
       - name: Install deps
         run: |
-          apt-get update -qy
-          apt-get install -qy texlive-extra-utils texlive-latex-recommended texlive-font-utils texlive-fonts-extra texlive-latex-extra texlive-fonts-recommended texlive-science poppler-utils epstool texlive-luatex fonts-linuxlibertine
+          sudo apt-get update -qy
+          sudo apt-get install -qy texlive-extra-utils texlive-latex-recommended texlive-font-utils texlive-fonts-extra texlive-latex-extra texlive-fonts-recommended texlive-science poppler-utils epstool texlive-luatex fonts-linuxlibertine
       - name: Build Arxiv format PDF
         run: |
           make arxiv
