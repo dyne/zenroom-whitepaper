@@ -2,7 +2,7 @@ name: zenroom-whitepaper
 on:
   push:
     branches:
-      - master
+      - main
 
 jobs:
   latex-build:
