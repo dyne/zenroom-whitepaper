@@ -1,0 +1,87 @@
+\documentclass[12pt]{article}
+\usepackage[paperwidth=6in, paperheight=9in, margin=0.5in]{geometry}
+\usepackage{microtype}
+\usepackage{fontspec}
+\setmainfont{Inter} % Good readability on mobile screens
+\usepackage{amsmath}
+\usepackage{amssymb} % Add this for \mathbb command
+\usepackage{graphicx}
+\usepackage{xcolor}
+\usepackage{enumitem}
+\usepackage{booktabs}
+\usepackage{titlesec}
+\usepackage{ragged2e}
+
+% Configure IBM Plex Sans for titles with bold weight
+\newfontfamily\titlefont{IBM Plex Sans}[
+  UprightFont = *-Regular,
+  BoldFont = *-Bold,
+  ItalicFont = *-Italic,
+  BoldItalicFont = *-BoldItalic
+]
+
+% Configure section titles to be left-aligned, wrap normally without hyphenation, and use IBM Plex
+\titleformat{\section}
+  {\titlefont\bfseries\Large\RaggedRight\hyphenpenalty=10000}{\thesection}{1em}{}
+\titleformat{\subsection}
+  {\titlefont\bfseries\large\RaggedRight\hyphenpenalty=10000}{\thesubsection}{1em}{}
+\titleformat{\subsubsection}
+  {\titlefont\bfseries\normalsize\RaggedRight\hyphenpenalty=10000}{\thesubsubsection}{1em}{}
+
+% Set document to be left-justified
+\RaggedRight
+
+% Optimize for mobile reading
+\setlength{\parskip}{1.2em} % Increased paragraph spacing
+\setlength{\parindent}{0pt} % No paragraph indentation
+\linespread{1.3} % Increased line spacing
+\sloppy % Allow more flexible line breaking
+
+% Load hyperref last to avoid conflicts
+\usepackage{hyperref}
+% Configure hyperref for better mobile experience
+\hypersetup{
+    colorlinks=true,
+    linkcolor=blue,
+    urlcolor=blue,
+    citecolor=blue,
+    pdftitle={DYNE: Our next paper},
+    pdfauthor={Denis Roio, Puria Nafisi Azizi, Andrea D'Intino},
+    pdfsubject={cs.CR},
+    pdfkeywords={Privacy, Digital credentials}
+}
+
+\begin{document}
+
+% Title section optimized for mobile
+\begin{center}
+    \vspace*{0.5cm}
+    {\titlefont\bfseries\LARGE DYNE: Our next paper}
+    \vspace{0.8cm}
+    
+    \begin{tabular}{@{}c@{}}
+        Denis Roio \\
+        \textit{Dyne.org Foundation} \\
+        Switzerland \\
+        \vspace{0.3cm}
+        \\
+        Puria Nafisi Azizi \\
+        \textit{Dyne.org Foundation} \\
+        Italy \\
+        \vspace{0.3cm}
+        \\
+        Andrea D'Intino \\
+        \textit{Forkbomb B.V.} \\
+        Denmark \\
+        info@forkbomb.eu
+    \end{tabular}
+    \vspace{1cm}
+\end{center}
+
+\begin{abstract}
+    \textbf{Abstract:} Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+\end{abstract}
+
+\textbf{Keywords:} Privacy, Digital credentials
+
+\vspace{1cm}

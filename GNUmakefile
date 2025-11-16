@@ -6,6 +6,9 @@
 
 TARGET := zenroom-whitepaper
 
+mobile: compose-mobile
+	lualatex $(TARGET)
+
 arxiv: compose-arxiv
 	lualatex $(TARGET)
 
@@ -32,6 +35,9 @@ compose-ieee:
 
 compose-arxiv:
 	@cat head-arxiv.tex $(TARGET).body.tex > $(TARGET).tex
+
+compose-mobile:
+	@cat head-mobile.tex $(TARGET).body.tex > $(TARGET).tex
 
 clean:
 	rm -f *blg *bbl *dvi *pdf *toc *out *aux *log *lof

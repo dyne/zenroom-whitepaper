@@ -16,7 +16,7 @@ Do an `apt-get install` of the following packages:
  texlive-extra-utils texlive-latex-recommended texlive-font-utils \
  texlive-fonts-extra texlive-latex-extra texlive-fonts-recommended \
  texlive-science poppler-utils epstool texlive-luatex \
- fonts-linuxlibertine
+ fonts-linuxlibertine fonts-inter fonts-ibm-plex
 ```
 
 Then do `make` to build the latest `$(TARGET).pdf` from this repo.
