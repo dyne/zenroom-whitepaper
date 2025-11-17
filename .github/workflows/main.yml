@@ -58,7 +58,6 @@ jobs:
           source: |
             upload/release-pdf/Zenroom-WhitepaperV5.pdf
             upload/release-pdf/Zenroom-WhitepaperV5_mobile.pdf
-zenroom-whitepaper.pdf,
           target: |
             /srv/ftp/zenroom
           strip_components: 2
