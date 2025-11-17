@@ -56,7 +56,7 @@ jobs:
           # scp-drone uploads dirs if wildcards are in them, so here
           # we need to list uploaded files one by one.
           source: |
-            upload/release-pdf/Zenroom-WhitepaperV5.pdf
+            upload/release-pdf/Zenroom-WhitepaperV5.pdf,
             upload/release-pdf/Zenroom-WhitepaperV5_mobile.pdf
           target: |
             /srv/ftp/zenroom
