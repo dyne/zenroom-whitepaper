@@ -8,6 +8,9 @@ jobs:
   latex-build:
     name: 🐧 Build PDF
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        target: [mobile, desktop]
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -17,27 +20,24 @@ jobs:
         uses: awalsh128/cache-apt-pkgs-action@latest
         with:
           packages: texlive-extra-utils texlive-latex-recommended texlive-font-utils texlive-fonts-extra texlive-latex-extra texlive-fonts-recommended texlive-science poppler-utils epstool texlive-luatex fonts-linuxlibertine
-      - name: Build Arxiv format PDF
+      - name: Build PDF
         run: |
-          make pdf
-          mv zenroom-whitepaper.pdf Zenroom-WhitepaperV5.pdf
-      - name: Build Mobile format PDF
-        run: |
-          make pdf-mobile
-          mv zenroom-whitepaper.pdf Zenroom-WhitepaperV5_mobile.pdf
-
+          make ${{ matrix.target }}
+          mv zenroom-whitepaper.pdf Zenroom-WhitepaperV5_${{ matrix.target }}.pdf
       - name: Upload release artifact
         uses: actions/upload-artifact@v4
         with:
-          name: release-pdf
+          name: release-${{ matrix.target }}
           path: |
-            Zenroom-WhitepaperV5.pdf
-            Zenroom-WhitepaperV5_mobile.pdf
+             Zenroom-WhitepaperV5_${{matrix_target}}.pdf
 
   draft-binary-release:
     name: 📦 Upload release
     needs: [latex-build]
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        target: [mobile, desktop]
     steps:
       - name: download binary artifacts
         uses: actions/download-artifact@v4
@@ -56,8 +56,7 @@ jobs:
           # scp-drone uploads dirs if wildcards are in them, so here
           # we need to list uploaded files one by one.
           source: |
-            upload/release-pdf/Zenroom-WhitepaperV5.pdf,
-            upload/release-pdf/Zenroom-WhitepaperV5_mobile.pdf
+            upload/release-${{ matrix.target }}/Zenroom-WhitepaperV5_${{ matrix.target }}.pdf,
           target: |
             /srv/ftp/zenroom
           strip_components: 2

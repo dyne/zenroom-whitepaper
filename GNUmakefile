@@ -8,12 +8,12 @@ TARGET := zenroom-whitepaper
 TEMPLATE := mobile
 # template: mobile arxiv arxiv-zip
 
-pdf-mobile:
-pdf-mobile: TEMPLATE := mobile
-pdf-mobile: compose
+mobile:
+mobile: TEMPLATE := mobile
+mobile: compose
 	lualatex $(TARGET)
 
-pdf: arxiv
+desktop: arxiv
 
 compose:
 	-./git-history-latex.sh > git-history.tex
