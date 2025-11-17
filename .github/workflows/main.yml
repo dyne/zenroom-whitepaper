@@ -19,13 +19,20 @@ jobs:
           sudo apt-get install -qy texlive-extra-utils texlive-latex-recommended texlive-font-utils texlive-fonts-extra texlive-latex-extra texlive-fonts-recommended texlive-science poppler-utils epstool texlive-luatex fonts-linuxlibertine
       - name: Build Arxiv format PDF
         run: |
-          make arxiv
+          make pdf
+          mv zenroom-whitepaper.pdf Zenroom-WhitepaperV5.pdf
+      - name: Build Mobile format PDF
+        run: |
+          make pdf-mobile
+          mv zenroom-whitepaper.pdf Zenroom-WhitepaperV5_mobile.pdf
+
       - name: Upload release artifact
         uses: actions/upload-artifact@v4
         with:
-          name: release-arxiv
+          name: release-pdf
           path: |
-            zenroom-whitepaper.pdf
+            Zenroom-WhitepaperV5.pdf
+            Zenroom-WhitepaperV5_mobile.pdf
 
   draft-binary-release:
     name: 📦 Upload release
@@ -49,7 +56,9 @@ jobs:
           # scp-drone uploads dirs if wildcards are in them, so here
           # we need to list uploaded files one by one.
           source: |
-            upload/release-arxiv/zenroom-whitepaper.pdf,
+            upload/release-pdf/Zenroom-WhitepaperV5.pdf
+            upload/release-pdf/Zenroom-WhitepaperV5_mobile.pdf
+zenroom-whitepaper.pdf,
           target: |
             /srv/ftp/zenroom
           strip_components: 2
