@@ -5,18 +5,34 @@
 # 	zenroom -l common.lua POC.lua
 
 TARGET := zenroom-whitepaper
+TEMPLATE := mobile
+# template: mobile arxiv arxiv-zip
 
-mobile: compose-mobile
+pdf-mobile:
+pdf-mobile: TEMPLATE := mobile
+pdf-mobile: compose
 	lualatex $(TARGET)
 
-arxiv: compose-arxiv
+pdf: arxiv
+
+compose:
+	-./git-history-latex.sh > git-history.tex
+	@cat head-$(TEMPLATE).tex $(TARGET).body.tex \
+	| sed -e "/%%ABSTRACT%%/r abstract.txt" -e "s/%%ABSTRACT%%//" \
+	| sed -e "/%%GIT-HISTORY%%/r git-history.tex" -e "s/%%GIT-HISTORY%%//" \
+	 > $(TARGET).tex
+
+
+arxiv: TEMPLATE := arxiv
+arxiv: compose
 	lualatex $(TARGET)
 
 # bibtex   $(TARGET)
 # pdflatex $(TARGET)
 # pdflatex $(TARGET)
 
-arxiv-zip: compose-arxiv
+arxiv-zip: TEMPLATE := arxiv
+arxiv-zip: compose
 	@rm -rf $(TARGET)-arxiv $(TARGET)-arxiv.zip && mkdir -p $(TARGET)-arxiv
 	@cp $(TARGET).tex $(TARGET).bbl arxiv.sty *converted-to.pdf *.eps $(TARGET)-arxiv
 	@zip -r $(TARGET)-arxiv.zip $(TARGET)-arxiv/*
@@ -24,20 +40,12 @@ arxiv-zip: compose-arxiv
 # epstopdf issueproveverify.eps
 # epstopdf hamming.eps
 
-ieee: compose-ieee
+ieee: TEMPLATE := ieee
+ieee: compose
 	pdflatex $(TARGET)
 	bibtex   $(TARGET)
 	pdflatex $(TARGET)
 	pdflatex $(TARGET)
-
-compose-ieee:
-	@cat head-ieee.tex $(TARGET).body.tex > $(TARGET).tex
-
-compose-arxiv:
-	@cat head-arxiv.tex $(TARGET).body.tex > $(TARGET).tex
-
-compose-mobile:
-	@cat head-mobile.tex $(TARGET).body.tex > $(TARGET).tex
 
 clean:
 	rm -f *blg *bbl *dvi *pdf *toc *out *aux *log *lof
