@@ -29,7 +29,7 @@ jobs:
         with:
           name: release-${{ matrix.target }}
           path: |
-             Zenroom-WhitepaperV5_${{matrix_target}}.pdf
+             Zenroom-WhitepaperV5_${{matrix.target}}.pdf
 
   draft-binary-release:
     name: 📦 Upload release
