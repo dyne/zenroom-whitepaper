@@ -89,7 +89,17 @@ details, integration engineers can simply include a library and move
 forward: later it won't cost them much to add the execution of a
 Zencode contract audited by domain experts.
 
-\section{Introduction: The Algorithmic Sovereignty Challenge}
+\section{Meta: reading formats and links}
+
+\begin{itemize}
+  \item \href{https://files.dyne.org/zenroom/Zenroom-WhitepaperV5\_mobile.pdf}{Read this whitepaper on mobile}
+  \item \href{https://files.dyne.org/zenroom/Zenroom-WhitepaperV5\_desktop.pdf}{Read or print this whitepaper}
+  \item \href{https://dev.zenroom.org}{Online Developers Manual}
+  \item \href{https://zenroom.org}{Homepage and downloads}
+  \item \href{https://apiroom.net}{Online IDE playground}
+\end{itemize}
+
+\section{Algorithmic Sovereignty for an Architecture of Trust}
 
 \subsection{The Trust Problem in Modern Computing}
 
@@ -97,8 +107,7 @@ Many organizations are developing for their own disadvantage. They are
 adopting code that most participants cannot read. Code taking
 decisions about resource allocation, access control, and identity
 verification runs in environments designed to optimize machine
-efficiency, not human understanding. This creates an asymmetry that
-compounds with scale.
+efficiency, not human understanding.
 
 Code is not even all that is needed to understand execution.
 
@@ -106,13 +115,13 @@ In protocol centric design multiple peers become interoperable with
 different implementations and work together to reach consensus on
 contract execution results. Just think of the parser differentials
 between implementations, how they can cause exploitable
-inconsistencies. Too many security incidents already validate that
+inconsistencies. Too many security incidents confirm that
 complexity enables exploitation.
 
 \subsection{Why Human-Readable Smart Contracts Matter}
 
 A smart contract should imply human comprehensibility. But most
-blockchain languages optimize for machine execution.
+languages optimize for machine execution.
 
 Privacy by design principles mandate that individuals understand how
 systems handle their information. Trust is built with verifiability
@@ -127,11 +136,10 @@ verify complex systems rather than questioning whether the complexity
 is necessary. Yet each new tool adds dependencies and increases the
 specialist knowledge required.
 
-A different approach starts by constraining what If we constrain what
-smart contracts can express, if the language is restricted enough,
-human readability and machine executability can converge. Simplicity
-has many advantages. If a contract is simple, then it makes auditing
-and upgrading much easier.
+If we constrain what smart contracts can express, if the language is
+restricted enough, human readability and machine executability can
+converge. Simplicity has many advantages. If a contract is simple,
+then it makes auditing and upgrading much easier.
 
 \subsection{The Cost of Cryptographic Complexity}
 
@@ -141,16 +149,17 @@ have published worrying timelines for transitioning to post-quantum
 cryptography. Many industry standards recommend updating to hybrid
 protocols to increase security.
 
-These mandates create concrete costs. Supporting multiple
+Such mandates create concrete costs. Supporting multiple
 cryptographic implementations means multiple libraries, multiple sets
 of dependencies, multiple testing and audit cycles.  The integration
 code that binds these components becomes its own maintenance burden
 and potential vulnerability surface.
 
 Production systems must handle transitions between
-algorithms. Sometimes they end up maintaining dual infrastructure and
-handle multiple migrations simultaneously. These situations rapidly
-end up burdening a project with technical debt, raising its costs.
+algorithms. Sometimes they end up maintaining dual (or larger...)
+infrastructure and handle multiple migrations simultaneously. These
+situations rapidly end up burdening a project with technical debt,
+raising its costs.
 
 \subsection{Zenroom's Mission and Design Philosophy}
 
@@ -186,8 +195,9 @@ contract platforms struggle to address.
 
 How can we improve security when the universal generic language we use
 is not deterministic and encourages growing dependencies? Zencode has
-limited expression and, while being similar to human-like language, we
-shows superior security when compared to unconstrained alternatives.
+limited expression and, while being similar to human-like language, it
+achieves superior security when compared to unconstrained
+alternatives.
 
 \section{Threat Model and Security Requirements}
 
