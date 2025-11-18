@@ -1,6 +1,6 @@
 % SPDX-FileCopyrightText: 2025 Dyne.org foundation
 % SPDX-License-Identifier: AGPL-3.0-or-later
-\section{Revisions}
+\section{Recent Document Revisions}
 %%GIT-HISTORY%%
 
 \section{Executive Summary}
@@ -31,236 +31,163 @@ signatures, the migration path is visible in human-readable
 statements, not buried in dependency chains and compiler
 optimizations.
 
-The technical implementation reflects eight years of production
-deployment, not laboratory research. Zenroom has zero external
-dependencies by design. The entire virtual machine, cryptographic
-primitives, and language parser compile to under 3MB across every
-major platform: iOS and Android mobile, WebAssembly browsers, server
-Linux and Windows, embedded ARM Cortex and ESP32 chips. This footprint
-is not an optimization target, it is a security requirement. Attack
-surface minimization starts with what you choose not to include.
+To do this, Zenroom has zero external dependencies, by design. The
+entire virtual machine, cryptographic primitives, and language parser
+statically compile to under 4 MiBs across every major platform: iOS
+and Android mobile, WebAssembly browsers, server Linux and Windows,
+embedded ARM Cortex and ESP32 chips. This footprint is not an
+optimization target, it is a security requirement. Adding dependencies
+always extends a software's attack surface.
 
 Our cryptographic capabilities span the current transition period in
 the industry. Native support for NIST P-256, secp256k1, BLS12-381,
-Ed25519 covers existing infrastructure integration. Post-quantum
-implementations of ML-KEM (Kyber) and ML-DSA (Dilithium) prepare for
-the upcoming mandates. BBS+ signatures enable selective disclosure and
-zero-knowledge proofs for privacy-preserving credentials. This range
-is not feature creep, it reflects the reality that organizations must
-maintain multiple cryptographic generations simultaneously during
-transitions that span years, not quarters.
+Ed25519 and RSA covers existing infrastructure
+integration. Post-quantum implementations of ML-KEM (Kyber) and ML-DSA
+(Dilithium) prepare for the upcoming mandates. BBS+ signatures,
+Coconut and Longfellow Zero Knowledge implementations enable
+privacy-preserving credential verification.
 
-Current production deployments demonstrate scope beyond pilot
-projects. The CREDIMI implementation provides EUDI-ARF wallet
-certification infrastructure for the European Digital Identity
-framework. DIDROOM operates as production W3C DID and Verifiable
-Credential infrastructure. The Global Passport Project processes
-identity verification at scale. These are not use cases or prototypes,
-they are running systems that would cost significantly more to
-implement and audit using conventional approaches.
+Zenroom is currently powering mature products and solutions. The
+DIDROOM wallet and issuer dashboard. The did:dyne W3C registered
+decentralized identity register for credential issuer infrastructure.
+Zenswarm the Oracle system to run verifiable computations in cloud
+microservices. Zenbridge to connect with any data provider. They are
+running systems that would cost significantly more to implement and
+audit using conventional approaches.
 
 For technical decision-makers, three aspects distinguish Zenroom from
 alternatives:
 
 \begin{enumerate}
 \item Deterministic execution is guaranteed by the virtual machine
-  design, not promised through careful coding practices. The same
-  Zencode contract produces identical cryptographic outputs across all
-  platforms, every time. This is verifiable.
+  design. The same Zencode contract produces identical cryptographic
+  outputs across all platforms, every time.
 
 \item Isolation is enforced at the VM level. Zenroom has no access to
-  filesystem, network, or calling process memory. Malicious contracts
-  cannot break sandbox boundaries because those boundaries are not
-  implemented through runtime checks, they are structural.
+  filesystem, network, or calling process memory. When using Zencode,
+  malicious contracts cannot break out of secure, observable execution.
 
 \item Language-theoretic security principles prevent entire classes of
   parser differential attacks. The Zencode grammar is intentionally
-  restricted to avoid Turing-complete ambiguity. Input validation
-  happens before processing, not during, following formal separation
-  that most languages ignore.
+  restricted, and all input validation happens before
+  processing. There is formal separation of validation and processing.
 \end{enumerate}
 
-Organizations adopting Zenroom typically cite reduced audit costs and
-compressed integration timelines as immediate value. The longer-term
-value emerges in cryptographic agility. When algorithm transitions
-become mandatory, whether due to quantum computing threats or
-regulatory requirements, the migration is a contract update visible to
-all domain experts, not a infrastructure replacement project requiring
-specialized consultants.
+The longer-term adoption value of Zenroom emerges in cryptographic
+agility. When algorithm transitions become mandatory, whether due to
+quantum computing threats or regulatory requirements, the migration is
+a contract update visible to all domain experts.
 
 The decision to adopt Zenroom is ultimately a choice about where
 complexity lives in your security infrastructure. You can push it into
 increasingly sophisticated toolchains and frameworks that require
-specialists to audit, or you can contain it inside a small, auditable
-VM that executes contracts anyone can read. Both approaches have
-costs. The first compounds over time. The second does not.
+specialists to audit, or
+
+Developers of different fields work in parallel: while mathematicians
+and cryptographers work on implementing a protocol following RFC
+details, integration engineers can simply include a library and move
+forward: later it won't cost them much to add the execution of a
+Zencode contract audited by domain experts.
 
 \section{Introduction: The Algorithmic Sovereignty Challenge}
 
 \subsection{The Trust Problem in Modern Computing}
 
-We are operating systems that most participants cannot read. The code
-executing decisions about resource allocation, access control, and
-identity verification runs in environments designed to optimize
-machine efficiency, not human understanding. This creates an asymmetry
-that compounds with scale. As more infrastructure moves toward
-automated decision-making through smart contracts and algorithmic
-governance, the gap between those who can verify system behavior and
-those who must trust it widens.
+Many organizations are developing for their own disadvantage. They are
+adopting code that most participants cannot read. Code taking
+decisions about resource allocation, access control, and identity
+verification runs in environments designed to optimize machine
+efficiency, not human understanding. This creates an asymmetry that
+compounds with scale.
 
-This asymmetry is not primarily technical. Every organization
-employing developers has staff capable of reading code. The problem is
-structural: most production systems depend on toolchains, frameworks,
-and runtime environments complex enough that verification requires
-specialists. A security audit of a Solidity smart contract must
-account for the compiler version, the EVM implementation, gas
-optimization patterns, and the interpretation of ambiguous language
-specifications. The contract source code is only the starting point
-for understanding what actually executes.
+Code is not even all that is needed to understand execution.
 
-The situation worsens under distributed architectures where multiple
-implementations must reach consensus on contract execution
-results. Parser differentials between implementations create
-exploitable inconsistencies. Different organizations run different
-versions of the same virtual machine, apply different optimizations,
-and interpret edge cases differently. The 2016 DAO exploit
-demonstrated this at considerable cost. Subsequent incidents continue
-to validate that complexity enables exploitation.
+In protocol centric design multiple peers become interoperable with
+different implementations and work together to reach consensus on
+contract execution results. Just think of the parser differentials
+between implementations, how they can cause exploitable
+inconsistencies. Too many security incidents already validate that
+complexity enables exploitation.
 
 \subsection{Why Human-Readable Smart Contracts Matter}
 
-The term smart contract implies two things that rarely coexist in
-practice: machine executability and human comprehensibility. Most
-blockchain languages optimize for the first and treat the second as a
-documentation problem. Developers write in high-level languages that
-compile to opcodes, then separately document what the contract
-purports to do. Auditors review both the source and the compiled
-output, but cannot guarantee equivalence without trusting the
-compiler.
+A smart contract should imply human comprehensibility. But most
+blockchain languages optimize for machine execution.
 
-This separation introduces risk that extends beyond technical
-audit. Legal frameworks for contract enforcement assume all parties
-can examine contract terms. Regulatory compliance requires
-demonstrating to non-technical authorities what data processing occurs
-and under what conditions. Privacy by design principles mandate that
-individuals understand how systems handle their information. None of
-these requirements can be satisfied by showing domain experts assembly
-code or pointing to documentation that might not match implementation.
+Privacy by design principles mandate that individuals understand how
+systems handle their information. Trust is built with verifiability
+and demonstrations for experts, not just coders, about what data
+processing occurs and under what conditions.
 
-The response in much of the industry has been to build increasingly
-sophisticated tooling: formal verification frameworks, automated
-testing suites, static analysis engines. These tools are valuable but
-they address symptoms rather than causes. They attempt to verify
-complex systems rather than questioning whether the complexity is
-necessary. Each new tool adds dependencies, increases the specialist
-knowledge required, and expands the trusted computing base.
+For the past twenty and more years, large industries have built
+increasingly sophisticated tooling: formal verification frameworks,
+automated testing suites, static analysis engines. These tools are
+valuable but they address symptoms rather than causes. They attempt to
+verify complex systems rather than questioning whether the complexity
+is necessary. Yet each new tool adds dependencies and increases the
+specialist knowledge required.
 
-A different approach starts by constraining what smart contracts can
-express. If the language is restricted enough, human readability and
-machine executability can converge. The contract text itself becomes
-the executable specification. Verification means reading and
-understanding the contract, not analyzing compilation artifacts. This
-requires accepting limitations on what the language can do, but those
-limitations are precisely what make verification tractable.
+A different approach starts by constraining what If we constrain what
+smart contracts can express, if the language is restricted enough,
+human readability and machine executability can converge. Simplicity
+has many advantages. If a contract is simple, then it makes auditing
+and upgrading much easier.
 
 \subsection{The Cost of Cryptographic Complexity}
 
-Organizations implementing cryptographic systems face a timeline
-problem. Current infrastructure relies on algorithms that function
-adequately today but carry known future risks. NIST has published
-timelines for transitioning to post-quantum cryptography. The European
-Union mandates cryptographic agility in its cybersecurity
-frameworks. Industry standards bodies recommend maintaining multiple
-algorithm generations simultaneously.
+Current infrastructure relies on cryptography that functions
+adequately today but may carry known future risks. Many institutions
+have published worrying timelines for transitioning to post-quantum
+cryptography. Many industry standards recommend updating to hybrid
+protocols to increase security.
 
 These mandates create concrete costs. Supporting multiple
 cryptographic implementations means multiple libraries, multiple sets
-of dependencies, multiple testing and audit cycles. Each algorithm
-requires specialists familiar with its particular security assumptions
-and implementation pitfalls. When vulnerabilities emerge in
-widely-used libraries, the response involves tracking dependency
-chains through multiple layers of abstraction.
+of dependencies, multiple testing and audit cycles.  The integration
+code that binds these components becomes its own maintenance burden
+and potential vulnerability surface.
 
-The conventional approach treats each cryptographic capability as a
-separate component integrated through APIs. You have an ECDSA library
-for signatures, an AES library for encryption, a different library for
-key derivation, another for random number generation. Each comes from
-different maintainers, follows different conventions, gets updated on
-different schedules. The integration code that binds these components
-becomes its own maintenance burden and potential vulnerability
-surface.
-
-Production systems must also handle transitions between
-algorithms. When SHA-1 became insecure for certificates, organizations
-could not simply flip a switch. They had to maintain dual
-infrastructure, coordinate with partners on transition schedules,
-verify that all components properly handled both algorithms during the
-migration period. Similar transitions are coming for asymmetric
-cryptography as quantum computing advances. Organizations that handled
-one algorithm migration know the resource requirements. Having to
-handle multiple such migrations simultaneously, which is the current
-trajectory, scales costs considerably.
+Production systems must handle transitions between
+algorithms. Sometimes they end up maintaining dual infrastructure and
+handle multiple migrations simultaneously. These situations rapidly
+end up burdening a project with technical debt, raising its costs.
 
 \subsection{Zenroom's Mission and Design Philosophy}
 
-Zenroom emerged from research into how distributed systems can make
-decisions that participants can verify without requiring specialized
-expertise. The DECODE project for the European Union investigated
-whether communities could maintain technological sovereignty while
-using sophisticated cryptographic tools. The question was not whether
-experts could implement secure systems, but whether non-experts could
-audit and trust what experts built.
+Zenroom emerged from the DECODE project, a research grant funded by
+the European Commission in 2016 to investigate blockchain technology.
+The first technical vision came asking a question difficult to answer:
+how communities can maintain algorithmic sovereignty while using
+sophisticated cryptographic tools? The question is not whether experts
+can implement secure systems, but whether non-experts can audit and
+trust what experts build.
 
 This question led to three design principles that distinguish Zenroom
 from other approaches:
 
 \begin{enumerate}
-\item The contract language must be readable by domain experts with no
-  programming experience. This is not about making syntax slightly
-  more friendly or adding better comments. The contract text itself,
-  as written, must communicate its purpose and operations to someone
-  familiar with the domain but not with coding.
+\item The Zencode contract language is readable by domain experts with
+  no programming experience. The contract itself, as code, must be
+  able to communicate its purpose and operations to a domain expert.
 
-\item The execution environment must contain no hidden
-  complexity. What you see in the contract is what executes. No
-  compilation steps that could introduce behavior not visible in
-  source. No runtime optimizations that could change outcomes. No
-  external dependencies that could behave differently across
-  installations.
+\item The execution environment is securely isolated and its behavior
+  needs to be fully deterministic. No matter what platform is
+  executing a Zencode contract, one must always be able to produce the
+  same outputs using the same inputs.
 
-\item Security must be structural, not procedural. The environment
-  should make entire classes of vulnerabilities impossible by design
-  rather than depending on developers following best practices. If the
-  VM has no file system access, contracts cannot have file system
-  vulnerabilities. If the parser rejects ambiguous statements,
-  contracts cannot contain parser differential exploits.
+\item Security by design, not as an emergency procedure. The Zenroom
+  virtual machine environment makes an entire classes of
+  vulnerabilities impossible.
 \end{enumerate}
-
-These principles impose constraints that some will find
-limiting. Zencode is deliberately not Turing complete. It cannot
-express arbitrary computations. The cryptographic primitives are fixed
-at compile time, not loadable at runtime. The execution model is
-strictly sequential with no concurrent operations. Each of these
-constraints closes attack surfaces and simplifies verification.
 
 The eight years since the initial DECODE implementation have validated
 this approach in production environments that traditional smart
-contract platforms struggle to address. Digital identity systems
-require privacy-preserving credential verification. Supply chain
-tracking needs cryptographic guarantees without exposing business
-logic. Municipal governance demands transparency without requiring
-citizens to understand assembly code. These use cases share a
-requirement: the domain experts who must trust the system cannot be
-expected to trust developers by reputation. They need to verify by
-inspection.
+contract platforms struggle to address.
 
-Zenroom's current deployment across European digital identity
-infrastructure, global passport verification, and blockchain
-integration demonstrates that constrained languages can address
-real-world requirements. The question for organizations evaluating
-Zenroom is not whether it can express every possible computation, but
-whether its constraints align with actual security requirements better
-than unconstrained alternatives.
+How can we improve security when the universal generic language we use
+is not deterministic and encourages growing dependencies? Zencode has
+limited expression and, while being similar to human-like language, we
+shows superior security when compared to unconstrained alternatives.
 
 \section{Threat Model and Security Requirements}
 
