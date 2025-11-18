@@ -20,7 +20,7 @@ jobs:
         uses: awalsh128/cache-apt-pkgs-action@latest
         with:
           packages: texlive-extra-utils texlive-latex-recommended texlive-font-utils texlive-fonts-extra texlive-latex-extra texlive-fonts-recommended texlive-science poppler-utils epstool fonts-linuxlibertine
-          version: 1.0
+          version: 1.1
           execute_install_scripts: true
       - name: Install deps (non cached)
         run: |
