@@ -16,12 +16,16 @@ jobs:
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
-      - name: Install deps
+      - name: Install deps (cached)
         uses: awalsh128/cache-apt-pkgs-action@latest
         with:
-          packages: texlive-extra-utils texlive-latex-recommended texlive-font-utils texlive-fonts-extra texlive-latex-extra texlive-fonts-recommended texlive-science poppler-utils epstool texlive-luatex fonts-linuxlibertine
+          packages: texlive-extra-utils texlive-latex-recommended texlive-font-utils texlive-fonts-extra texlive-latex-extra texlive-fonts-recommended texlive-science poppler-utils epstool fonts-linuxlibertine
           version: 1.0
           execute_install_scripts: true
+      - name: Install deps (non cached)
+        run: |
+          sudo apt update
+          sudo apt install -qy texlive-luatex
       - name: Build PDF
         run: |
           make ${{ matrix.target }}
